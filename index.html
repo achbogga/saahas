@@ -1,0 +1,58 @@
+<head>
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  
+  <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+   <input id="clickMe" type="button" value="Simulate 10 Days" onclick="getNext();" />
+  
+  <input id="clickMe" type="button" value="initial Week" onclick="getInitialWeek();" />
+  
+  <script>
+    <!-- JAVASCRIPT CODE GOES HERE -->
+    var x1=10,x2=10,x3=10,y1=10,y2=10,y3=10,z1=10,z2=10,z3=10;
+
+
+var data = [
+  {
+    z: [[x1,x2,x3], [y1,y2,y3], [z1,z2,z3]],
+    type: 'heatmap'
+  }
+];
+
+Plotly.plot('myDiv', data);
+
+
+function getNext() {
+  console.log("In next");   
+ 
+  
+   data = [
+  {
+    z: [[10, 10,10], [20, 80, 20], [30, 20, 30],[40,40,40],[50,20,70],[80,20,80]],
+    type: 'heatmap'
+  }
+];
+   Plotly.plot('myDiv', data);
+  
+}
+
+
+function getInitialWeek() {
+  console.log("In next");   
+ 
+  
+  data = [
+  {
+    z: [[x1,x2,x3], [y1,y2,y3], [z1,z2,z3]],
+    type: 'heatmap'
+  }
+];
+   Plotly.plot('myDiv', data);
+  
+}
+
+  </script>
+</body>
