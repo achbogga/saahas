@@ -2,3 +2,7 @@ numpy
 scipy
 imageio
 flask
+sqlalchemy
+flask-sqlalchemy
+Flask-SQLAlchemy-Session
+python-dateutil
