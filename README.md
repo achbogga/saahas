@@ -1,0 +1,2 @@
+# saahas
+Every tomato plant is different. The time it takes for a fruit to mature and become ripe for harvest varies heavily based on its color and many other factors. It is a pain for farmers to harvest at the right time and exact location to harvest manually. Our solution uses automated drone imagery with fruit color analysis over time along with location information to tell farmers exactly when to start harvesting and how to maximize quality and quantity.
