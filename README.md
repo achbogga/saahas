@@ -3,6 +3,7 @@ Every tomato plant is different. The time it takes for a fruit to mature and bec
 
 
 
+
 ```python
 # import the necessary packages
 import numpy as np
@@ -82,7 +83,7 @@ from scipy import misc # try
 image = misc.imread('t1.png')
 image_gray = image[:,:,1]
 
-blobs_log = blob_log(image_gray, max_sigma=10, num_sigma=5, threshold=.3)
+blobs_log = blob_log(image_gray, max_sigma=10, num_sigma=5, threshold=.1)
 # Compute radii in the 3rd column.
 blobs_log[:, 2] = blobs_log[:, 2] * sqrt(2)
 
@@ -148,7 +149,7 @@ plt.imshow(plot_image)
 
 
 
-    <matplotlib.image.AxesImage at 0x7fd5542b2510>
+    <matplotlib.image.AxesImage at 0x7f3de1e51510>
 
 
 
@@ -216,9 +217,10 @@ plt.show()
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
-
+from copy import deepcopy
 
 img = cv2.imread('t1.png')
+#img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 #get rid of very bright and very dark regions
 delta=30
@@ -237,7 +239,13 @@ hue = HSV_img[:, :, 0]
 hist = cv2.calcHist([hue],[0],None,[256],[0,256])
 hist= hist[1:, :] #suppress black value
 elem = np.argmax(hist)
+hist_new = deepcopy(hist)
+hist_new[elem] = 0
+new_elem = np.argmax(hist_new)
+#elem = hist.argsort()[-3:][::-1][1]
+elem = new_elem
 print np.max(hist), np.argmax(hist)
+print np.max(hist_new), np.argmax(hist_new)
 
 tolerance=10
 lower_gray = np.array([elem-tolerance, 0,0])
@@ -246,7 +254,6 @@ upper_gray = np.array([elem+tolerance,255,255])
 mask = cv2.inRange(HSV_img, lower_gray, upper_gray)
 # Bitwise-AND mask and original image
 res2 = cv2.bitwise_and(img,img, mask= mask)
-
 
 titles = ['Original Image', 'Selected Gray Values', 'Hue', 'Result']
 images = [img, res, hue, res2]
@@ -258,10 +265,66 @@ plt.show()
 ```
 
     26919.0 39
+    26280.0 38
 
 
 
 ![png](output_10_1.png)
+
+
+
+```python
+res3 = images[0]-images[3]
+res4 = cv2.cvtColor(res3, cv2.COLOR_HSV2BGR)
+res5 = cv2.cvtColor(res4, cv2.COLOR_BGR2GRAY)
+```
+
+
+```python
+print res5.shape
+hist, bins = np.histogram(res5)
+#hist, bins = np.histogram(x, bins=50)
+width = 0.7 * (bins[1] - bins[0])
+center = (bins[:-1] + bins[1:]) / 2
+plt.bar(center, hist, align='center', width=width)
+print (np.mean(res5))
+plt.show()
+plt.imshow(res5)
+```
+
+    (492, 1277)
+    52.361568972
+
+
+
+![png](output_12_1.png)
+
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f3ddd4802d0>
+
+
+
+
+![png](output_12_3.png)
+
+
+
+```python
+#res5[res5>(np.mean(res5)-5)]=0
+threshold = 40
+tomato_color_param = np.mean(res5)
+print (tomato_color_param)
+if (tomato_color_param) > threshold:
+    print (True)
+else:
+    print (False)
+```
+
+    52.361568972
+    True
 
 
 
